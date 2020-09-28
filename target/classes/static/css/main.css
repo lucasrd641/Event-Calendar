@@ -1,0 +1,11 @@
+body{
+    background:url('../images/tech-background.png');
+}
+.form-custom{
+    max-width: 400px;
+    padding: 30px 10px 20px;
+    margin: 10% auto;
+    background-color: #fff;
+    border: 3px solid rgba(0,0,0,0.1);
+    text-align: center;
+}
