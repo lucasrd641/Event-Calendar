@@ -13,6 +13,6 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 
     
     @Query("SELECT e FROM Event e WHERE e.user.id = :id")
-	List<Event> findAllByUserId(Integer id);
+	List<Event> findAllByUserId(Long id);
     
 }

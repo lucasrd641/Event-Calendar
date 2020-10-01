@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-    <title>Login</title>
+    <title>Event Calendar</title>
   </head>
   <body>
     <form th:action="@{/login}" method="get">
@@ -16,6 +16,7 @@
     </form>
     <div class="container-md">
         <form autocomplete="off" class="form-custom" th:action="@{/registration}" th:object="${user}" method="POST">
+            
             <h3>New Account</h3>
                 <br/>
             <div class="form-group">

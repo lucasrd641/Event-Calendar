@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg==" crossorigin="anonymous"></script>
-    <title>entrou</title>
+    <title>Event Calendar</title>
 </head>
 
 <body>
@@ -20,18 +20,20 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <form class="form-custom" th:action="@{/user/createEvent}" method="POST">
-                    <h3>Create New Event</h3>
+                <form class="form-custom" th:action="@{${eventFormUrl}}" method="POST">
+                    
+                    <h3 th:text="${eventForm}"><span th:if="${eventEdit==null}"></h3>
+                    <input type="hidden" id="event_id" th:value="${eventEdit?.id}" name="event_id" class="form-control" required/>
                     <br/>
                     <label for="event_title">Title:</label>
-                    <input type="text" id="event_title" name="event_title" placeholder="Event Title" class="form-control" required/>
+                    <input type="text" id="event_title" th:value="${eventEdit?.title}" name="event_title" placeholder="Event Title" class="form-control" required/>
                     <br />
                     <label for="event_description">Description:</label>
-                    <textarea class="form-control" name="event_description" id="event_description" placeholder="Event Description"rows="3"></textarea>
+                    <textarea class="form-control" name="event_description" th:text="${eventEdit?.description}" id="event_description" placeholder="Event Description"rows="3"></textarea>
                     <br />
                         <label for="dateBegin">Begins:</label>
                         <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"
+                            <input type="text" th:value="${eventEditBegin}" class="form-control datetimepicker-input" data-target="#datetimepicker1"
                                    name="dateBegin" id="dateBegin" placeholder="Begin Date" required/>
                             <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
@@ -40,20 +42,22 @@
                     <br />
                     <label for="dateEnd">Ends:</label>
                         <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"
+                            <input type="text" th:value="${eventEditEnd}" class="form-control datetimepicker-input" data-target="#datetimepicker2"
                                    name="dateEnd" id="dateEnd" placeholder="End Date" required/>
                             <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
                             </div>
                         </div>
                     <br/>
+                    <a th:if="${eventEdit != null}" style="color: red;" class="btn btn-lg btn-primary btn-block" th:href="@{/user/home}"> Cancel Edit</a>
                     <button class="btn btn-lg btn-primary btn-block" name="Submit" value="createEvent" type="Submit"
-                        th:text="Create"></button>
+                        th:text=${eventFormSubmit}></button>
                 </form>
             </div>
             <div class="col-md-6">
                 <div class="card card-custom" th:each="event: ${allEvents}">
                     <div class="card-header">
+                        <i class="fas fa-calendar-check"></i>
                         <h4 class="card-title" style="display: inline;" th:text="${event.title}"></h4>
                         <div class="btn-group float-right">
                             <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -61,25 +65,26 @@
                                 <i class="fa fa-cog"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" href="#"><i class="fas fa-pencil-alt"></i> Edit</a>
-                                <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Delete</a>
-                                <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Invite User</a>
+                                <a class="dropdown-item" th:href="@{/user/editEvent?id={id}(id=${event.id})}"><i class="fas fa-pencil-alt"></i> Edit</a>
+                                <a class="dropdown-item" th:href="@{/user/deleteEvent?id={id}(id=${event.id})}"><i class="fa fa-trash-alt"></i> Delete</a>
+                                <a class="dropdown-item" href="#"><i class="fa fa-user-alt"></i> Invite User</a>
                             </div>
                        </div>
                    </div>                          
                     <div class="card-body">
-                        <p class="card-text" th:text="${event.description}"></p>
+                        <p class="card-text" th:text="${event.description}" required></p>
                     </div>
+                    
                     <div class="card-footer" style="display:ruby;">
                         <div class="card-text">Begins at:
                             <i class="fa fa-clock" style="color: green;"></i>
-                        <div class="card-text" th:text="${#temporals.format(event.beginDate, 'dd-MM-yyyy HH:mm')}">
+                        <div class="card-text" style="display:inline;" th:text="${#temporals.format(event.beginDate, 'dd-MM-yyyy HH:mm')}">
                         </div>
                         </div>
                         
                         <div class="card-text float-right">Ends at:
                             <i class="fa fa-clock" style="color: red;"></i>
-                            <div class="card-text"th:text="${#temporals.format(event.endDate, 'dd-MM-yyyy HH:mm')}">
+                            <div class="card-text" style="display:inline;" th:text="${#temporals.format(event.endDate, 'dd-MM-yyyy HH:mm')}">
                             </div>
                         
                         </div>
@@ -89,9 +94,7 @@
             
         </div>
     </div>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js" integrity="sha512-Izh34nqeeR7/nwthfeE0SI3c8uhFSnqxV0sI9TvTcXiFJkMd6fB644O64BRq2P/LA/+7eRvCw4GmLsXksyTHBg==" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

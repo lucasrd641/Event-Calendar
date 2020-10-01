@@ -60,6 +60,12 @@ public class DefaultController {
     public ModelAndView userHome() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         userLogged = userService.findUserByUsername(auth.getName());
+        mv.addObject("eventEditBegin", "");
+        mv.addObject("eventEnd", "");
+        mv.addObject("eventEdit", null);
+        mv.addObject("eventForm", "Create New Event");
+        mv.addObject("eventFormSubmit", "Create");
+        mv.addObject("eventFormUrl", "/user/createEvent");
         mv.addObject("allEvents", userService.getAllEventsByUserId(userLogged.getId()));
         mv.addObject("loggedUser", userLogged);
         mv.setViewName("user/home");
@@ -79,7 +85,44 @@ public class DefaultController {
         event.setBeginDate(dateBegin);
         event.setEndDate(dateEnd);
         event.setUser(userLogged);
-        userService.createNewEvent(event);
+        userService.saveEvent(event);
+        return new ModelAndView(new RedirectView("home"));
+    }
+
+    @GetMapping("user/deleteEvent{id}")
+    public ModelAndView deleteEvent(@RequestParam("id") Long id){
+        userService.deleteEventById(id);
+        return new ModelAndView(new RedirectView("home"));
+    }
+
+    @GetMapping("user/editEvent{id}")
+    public ModelAndView editEvent(@RequestParam("id") Long id){
+        mv.addObject("eventForm", "Edit Event");
+        mv.addObject("eventFormSubmit", "Edit");
+        mv.addObject("eventFormUrl", "/user/editEvent");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        Event event = userService.findEventById(id);
+        mv.addObject("eventEditBegin", event.getBeginDate().format(formatter));
+        mv.addObject("eventEditEnd", event.getEndDate().format(formatter));
+        mv.addObject("eventEdit", event);
+        mv.setViewName("user/home");
+        return mv;
+    }
+    @PostMapping("/user/editEvent")
+    public ModelAndView editEventProcess(@RequestParam("event_id") Long event_id, @RequestParam("event_title") String event_title,
+            @RequestParam("event_description") String event_description,
+            @RequestParam("dateBegin") String event_dateBegin, @RequestParam("dateEnd") String event_dateEnd) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime dateBegin = LocalDateTime.parse(event_dateBegin, formatter);
+        LocalDateTime dateEnd = LocalDateTime.parse(event_dateEnd, formatter);
+        Event event = new Event();
+        event.setId(event_id);
+        event.setTitle(event_title);
+        event.setDescription(event_description);
+        event.setBeginDate(dateBegin);
+        event.setEndDate(dateEnd);
+        event.setUser(userLogged);
+        userService.saveEvent(event);
         return new ModelAndView(new RedirectView("home"));
     }
 

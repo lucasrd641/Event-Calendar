@@ -43,11 +43,17 @@ public class UserService {
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         return userRepository.save(user);
 	}
-	public void createNewEvent(Event event) {
+	public void saveEvent(Event event) {
         eventRepository.save(event);
 	}
-	public List<Event> getAllEventsByUserId(Integer id) {
+	public List<Event> getAllEventsByUserId(Long id) {
 		return eventRepository.findAllByUserId(id);
+	}
+	public void deleteEventById(Long id) {
+        eventRepository.deleteById(id);
+	}
+	public Event findEventById(Long id) {
+		return eventRepository.getOne(id);
 	}
     
 }
