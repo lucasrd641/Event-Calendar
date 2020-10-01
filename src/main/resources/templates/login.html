@@ -21,9 +21,9 @@
             <form class="form-custom" th:action="@{/login}" method="POST">
                 <h3>Login</h3>
                 <br/>
-                <input type="text" id="user_username" name="user_username" placeholder="User Name" class="form-control" />
+                <input type="text" id="user_username" name="user_username" placeholder="User Name" class="form-control" required/>
                 <br />
-                <input type="password" th:placeholder="Password" id="user_password" name="user_password" class="form-control" />
+                <input type="password" th:placeholder="Password" id="user_password" name="user_password" class="form-control" required/>
                 <br />
                 <div align="center" th:if="${param.error}">
                     <p style="font-size: 20; color: #FF1C19;">User Name or Password invalid, please verify</p>

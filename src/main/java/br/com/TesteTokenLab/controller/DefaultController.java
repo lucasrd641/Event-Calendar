@@ -1,32 +1,39 @@
 package br.com.TesteTokenLab.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import br.com.TesteTokenLab.model.Event;
 import br.com.TesteTokenLab.model.User;
 import br.com.TesteTokenLab.service.UserService;
 
 @RestController
 public class DefaultController {
 
+    private User userLogged;
     @Autowired
     private UserService userService;
 
     private ModelAndView mv = new ModelAndView();
 
-    @GetMapping({"/","/login"})
-    public ModelAndView login(){
+    @GetMapping({ "/", "/login" })
+    public ModelAndView login() {
         mv.setViewName("login");
         return mv;
     }
 
     @GetMapping("/registration")
-    public ModelAndView registration(){
+    public ModelAndView registration() {
         User user = new User();
         mv.addObject("successMessage", "");
         mv.addObject("user", user);
@@ -35,12 +42,12 @@ public class DefaultController {
     }
 
     @PostMapping("/registration")
-    public ModelAndView newUser(User user){
-        User userExists = userService.findUserByUsername(user.getUsername());       
-        if(userExists!=null){
+    public ModelAndView newUser(User user) {
+        User userExists = userService.findUserByUsername(user.getUsername());
+        if (userExists != null) {
             mv.addObject("successMessage", "Username already exists");
             mv.setViewName("registration");
-        }else{
+        } else {
             userService.saveUser(user);
             mv.addObject("successMessage", "User Created");
             mv.addObject("user", new User());
@@ -50,9 +57,30 @@ public class DefaultController {
     }
 
     @GetMapping("/user/home")
-    public ModelAndView userHome(){
+    public ModelAndView userHome() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        userLogged = userService.findUserByUsername(auth.getName());
+        mv.addObject("allEvents", userService.getAllEventsByUserId(userLogged.getId()));
+        mv.addObject("loggedUser", userLogged);
         mv.setViewName("user/home");
         return mv;
     }
-    
+
+    @PostMapping("/user/createEvent")
+    public ModelAndView createEvent(@RequestParam("event_title") String event_title,
+            @RequestParam("event_description") String event_description,
+            @RequestParam("dateBegin") String event_dateBegin, @RequestParam("dateEnd") String event_dateEnd) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime dateBegin = LocalDateTime.parse(event_dateBegin, formatter);
+        LocalDateTime dateEnd = LocalDateTime.parse(event_dateEnd, formatter);
+        Event event = new Event();
+        event.setTitle(event_title);
+        event.setDescription(event_description);
+        event.setBeginDate(dateBegin);
+        event.setEndDate(dateEnd);
+        event.setUser(userLogged);
+        userService.createNewEvent(event);
+        return new ModelAndView(new RedirectView("home"));
+    }
+
 }
