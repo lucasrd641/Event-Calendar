@@ -61,7 +61,7 @@ public class DefaultController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         userLogged = userService.findUserByUsername(auth.getName());
         mv.addObject("eventEditBegin", "");
-        mv.addObject("eventEnd", "");
+        mv.addObject("eventEditEnd", "");
         mv.addObject("eventEdit", null);
         mv.addObject("eventForm", "Create New Event");
         mv.addObject("eventFormSubmit", "Create");
