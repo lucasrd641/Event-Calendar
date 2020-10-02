@@ -63,7 +63,7 @@ public class DefaultController {
         mv.addObject("eventEditBegin", "");
         mv.addObject("eventEditEnd", "");
         mv.addObject("eventEdit", null);
-        mv.addObject("eventForm", "Create New Event");
+        mv.addObject("eventForm", " Create New Event");
         mv.addObject("eventFormSubmit", "Create");
         mv.addObject("eventFormUrl", "/user/createEvent");
         mv.addObject("allEvents", userService.getAllEventsByUserId(userLogged.getId()));
@@ -97,7 +97,7 @@ public class DefaultController {
 
     @GetMapping("user/editEvent{id}")
     public ModelAndView editEvent(@RequestParam("id") Long id){
-        mv.addObject("eventForm", "Edit Event");
+        mv.addObject("eventForm", " Edit Event");
         mv.addObject("eventFormSubmit", "Edit");
         mv.addObject("eventFormUrl", "/user/editEvent");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

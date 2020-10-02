@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel='stylesheet' type='text/css' th:href='@{/css/main.css}'>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -22,7 +23,7 @@
             <div class="col-md-3">
                 <form class="form-custom" th:action="@{${eventFormUrl}}" method="POST">
                     
-                    <h3 th:text="${eventForm}"><span th:if="${eventEdit==null}"></h3>
+                    <h3 style="text-align: center;" ><i class="fa fa-calendar" aria-hidden="true"></i> <span th:text="${eventForm}"></span></h3>
                     <input type="hidden" id="event_id" th:value="${eventEdit?.id}" name="event_id" class="form-control" required/>
                     <br/>
                     <label for="event_title">Title:</label>
@@ -57,8 +58,7 @@
             <div class="col-md-6">
                 <div class="card card-custom" th:each="event: ${allEvents}">
                     <div class="card-header">
-                        <i class="fas fa-calendar-check"></i>
-                        <h4 class="card-title" style="display: inline;" th:text="${event.title}"></h4>
+                        <h4 class="card-title" style="display: inline;"><i class="fas fa-calendar-check"></i> <span th:text="${event.title}"></span></h4>
                         <div class="btn-group float-right">
                             <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
