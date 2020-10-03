@@ -67,6 +67,7 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
                                 <a class="dropdown-item" th:href="@{/user/editEvent?id={id}(id=${event.id})}"><i class="fas fa-pencil-alt"></i> Edit</a>
                                 <a class="dropdown-item" th:href="@{/user/deleteEvent?id={id}(id=${event.id})}"><i class="fa fa-trash-alt"></i> Delete</a>
+                                <a class="dropdown-item" th:href="@{/user/inviteUser?id={id}(id=${event.id})}"><i class="fas fa-user-friends"></i> Invite User</a>
                             </div>
                        </div>
                    </div>                          
@@ -85,8 +86,18 @@
                             <i class="fa fa-clock" style="color: red;"></i>
                             <div class="card-text" style="display:inline;" th:text="${#temporals.format(event.endDate, 'dd/MM/yyyy HH:mm')}">
                             </div>
-                        
+                            
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" th:if="${invites}!=null">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3><i class="fa fa-bell" aria-hidden="true"></i> Event Invites</h3>
+                    </div>
+                    <div class="card-body" th:each="invite: ${invites}">
+                        <a class="btn btn-primary btn-block" th:if="${invite.accepted == FALSE}" th:href="@{/user/acceptInvite?id={id}(id=${invite.id})}" th:text="'Accept invite for ' + ${invite.event.title} + ' ?'" role="button"></a>
                     </div>
                 </div>
             </div>

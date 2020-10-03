@@ -2,6 +2,7 @@ package br.com.TesteTokenLab.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,16 +15,17 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import br.com.TesteTokenLab.model.Event;
+import br.com.TesteTokenLab.model.EventUserRelation;
 import br.com.TesteTokenLab.model.User;
 import br.com.TesteTokenLab.service.UserService;
 
 @RestController
 public class DefaultController {
-
+    private Event eventInvite;
     private User userLogged;
     @Autowired
     private UserService userService;
-
+    private String currSearch;
     private ModelAndView mv = new ModelAndView();
 
     @GetMapping({ "/", "/login" })
@@ -66,6 +68,7 @@ public class DefaultController {
         mv.addObject("eventForm", " Create New Event");
         mv.addObject("eventFormSubmit", "Create");
         mv.addObject("eventFormUrl", "/user/createEvent");
+        mv.addObject("invites", userService.getInvitesById(userLogged.getId()));
         mv.addObject("allEvents", userService.getAllEventsByUserId(userLogged.getId()));
         mv.addObject("loggedUser", userLogged);
         mv.setViewName("user/home");
@@ -123,6 +126,40 @@ public class DefaultController {
         event.setEndDate(dateEnd);
         event.setUser(userLogged);
         userService.saveEvent(event);
+        return new ModelAndView(new RedirectView("home"));
+    }
+
+    @GetMapping("/user/search")
+    public ModelAndView searchUser(String name_search){
+        List<User> users = userService.findUserByString(name_search);
+        users.remove(userService.findUserById(userLogged.getId()));
+        currSearch = name_search;
+        mv.addObject("usersResult", users);
+        mv.setViewName("user/inviteUser");
+        return mv;
+    }
+
+    @GetMapping("user/inviteUser{id}")
+    public ModelAndView inviteUser(@RequestParam("id") Long event_id){
+        eventInvite = userService.findEventById(event_id);
+        mv.setViewName("user/inviteUser");
+        return mv;
+    }
+    @GetMapping("user/sendInvite{id}")
+    public ModelAndView sendInvite(@RequestParam("id") Long user_id){
+        EventUserRelation eur = new EventUserRelation();
+        eur.setEvent(eventInvite);
+        eur.setUser(userService.findUserById(user_id));
+        eur.setSent(true);
+        userService.sendInvite(eur);
+        mv.addObject("relation", eur);
+        return new ModelAndView(new RedirectView("search?name_search="+currSearch));
+    }
+    @GetMapping("user/acceptInvite{id}")
+    public ModelAndView acceptInvite(@RequestParam("id") Long eur_id){
+        EventUserRelation eurEdit =  userService.findRelationById(eur_id);
+        eurEdit.setAccepted(true);
+        userService.sendInvite(eurEdit);
         return new ModelAndView(new RedirectView("home"));
     }
 

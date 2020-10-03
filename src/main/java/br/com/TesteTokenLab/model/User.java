@@ -30,10 +30,11 @@ public class User {
     private String password;
     @Column(name = "active")
     private Boolean active;
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     @OneToMany(mappedBy = "user")
     private List<Event> events;
-
+    @OneToMany(mappedBy = "user")
+	Set<EventUserRelation> eur_relation;
 }
