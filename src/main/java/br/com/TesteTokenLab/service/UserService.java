@@ -75,5 +75,8 @@ public class UserService {
 	public EventUserRelation findRelationById(Long eur_id) {
 		return eventUserRepository.getOne(eur_id);
 	}
+	public void deleteRelationById(Long eur_id) {
+		eventUserRepository.deleteById(eur_id);
+	}
     
 }

@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +39,8 @@ public class EventUserRelation {
 	@JoinColumn(name = "user_id")
 	User user;
 	 
-	@ManyToOne
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "event_id")
 	Event event;
     

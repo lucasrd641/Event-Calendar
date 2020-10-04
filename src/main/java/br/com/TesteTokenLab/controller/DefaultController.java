@@ -129,6 +129,14 @@ public class DefaultController {
         return new ModelAndView(new RedirectView("home"));
     }
 
+    @GetMapping("user/inviteUser{id}")
+    public ModelAndView inviteUser(@RequestParam("id") Long event_id){
+        eventInvite = userService.findEventById(event_id);
+        mv.addObject("usersResult", null);
+        mv.setViewName("user/inviteUser");
+        return mv;
+    }
+
     @GetMapping("/user/search")
     public ModelAndView searchUser(String name_search){
         List<User> users = userService.findUserByString(name_search);
@@ -139,12 +147,6 @@ public class DefaultController {
         return mv;
     }
 
-    @GetMapping("user/inviteUser{id}")
-    public ModelAndView inviteUser(@RequestParam("id") Long event_id){
-        eventInvite = userService.findEventById(event_id);
-        mv.setViewName("user/inviteUser");
-        return mv;
-    }
     @GetMapping("user/sendInvite{id}")
     public ModelAndView sendInvite(@RequestParam("id") Long user_id){
         EventUserRelation eur = new EventUserRelation();
@@ -160,6 +162,12 @@ public class DefaultController {
         EventUserRelation eurEdit =  userService.findRelationById(eur_id);
         eurEdit.setAccepted(true);
         userService.sendInvite(eurEdit);
+        return new ModelAndView(new RedirectView("home"));
+    }
+    @GetMapping("user/declineInvite{id}")
+    public ModelAndView declineInvite(@RequestParam("id") Long eur_id){
+        EventUserRelation eurEdit =  userService.findRelationById(eur_id);
+        userService.deleteRelationById(eur_id);
         return new ModelAndView(new RedirectView("home"));
     }
 

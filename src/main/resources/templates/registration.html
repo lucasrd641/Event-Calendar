@@ -15,11 +15,14 @@
     <form th:action="@{/login}" method="get">
         <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
     </form>
-    <div class="container-md">
+    <div class="container-md" style="display: flex;">
+        <img class="img-custom" src="../images/photo-calender-desk-calendars.jpg" alt="error">
         <form autocomplete="off" class="form-custom" th:action="@{/registration}" th:object="${user}" method="POST">
-            
-            <h3 style="text-align: center;"><i class="far fa-address-card"></i> New Account</h3>
-                <br/>
+            <br>
+            <h1><i class="far fa-address-card"style="font-size: 174px;"></i><br><br>New Account</h1>
+            <h7><span class="text-success" th:utext="${successMessage}"></span></h7>
+            <br>
+            <br>
             <div class="form-group">
                 <div class="col-md-13">
                     <input type="text" th:field="*{fullName}" placeholder="Full Name"
@@ -46,8 +49,6 @@
                     <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                 </div>
             </div>
-
-            <h2><span class="text-success" th:utext="${successMessage}"></span></h2>
 
         </form>
 </div>

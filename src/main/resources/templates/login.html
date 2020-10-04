@@ -16,14 +16,15 @@
     <form th:action="@{/registration}" method="get">
         <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
     </form>
-    <div class="container-md">
+    <div class="container-md" style="display: flex;">
+            <img class="img-custom" src="../images/calendar-1.png" alt="error">
             <form class="form-custom" th:action="@{/login}" method="POST">
-                <h3 style="text-align: center;"><i class="far fa-calendar-alt"></i> Login</h3>
-                <br/>
+                <br>
+                <h1><i class="far fa-calendar-alt" style="font-size: 174px;"></i><br><br>Login</h1><br>
                 <input type="text" id="user_username" name="user_username" placeholder="User Name" class="form-control" required/>
-                <br />
+                <br>
                 <input type="password" th:placeholder="Password" id="user_password" name="user_password" class="form-control" required/>
-                <br />
+                <br>
                 <div align="center" th:if="${param.error}">
                     <p style="font-size: 20; color: #FF1C19;">User Name or Password invalid, please verify</p>
                 </div>

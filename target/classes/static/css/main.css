@@ -12,8 +12,26 @@ body{
 .form-custom{
     max-width: 400px;
     padding: 30px 10px 20px;
+    width: 35%;
+    margin: 10% auto;
+    background-color: #fff;
+    border: 3px solid rgba(0,0,0,0.1);
+    text-align: center;
+    float: right;
+}
+
+.form-user{
+    max-width: 400px;
+    padding: 30px 10px 20px;
     margin: 10% auto;
     background-color: #fff;
     border: 3px solid rgba(0,0,0,0.1);
     text-align: left;
+}
+
+.img-custom{
+    float: left;
+    margin: 10% auto;
+    width: 65%;
+    height: auto;
 }

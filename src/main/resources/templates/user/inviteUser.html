@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel='stylesheet' type='text/css' th:href='@{/css/main.css}'>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -18,39 +19,64 @@
         <button class="btn btn-md btn-warning btn-block" type="Submit">Logout</button>
     </form>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card card-custom">
-                    <div class="card-header">
-                        <form class="form-inline my-2 my-lg-0" th:action="@{/user/search}" method="get">
-                            <h3>Invite Users  </h3>
-                            <input class="form-control mr-sm-2" name="name_search" type="search" placeholder="Search" id="name_search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                            <a class="btn btn-primary" th:href="@{/user/home}"> Return</a>
+    <div class="container-md" style="display: flex;">
+        <img class="img-custom" src="../images/meting-3.jpg" alt="error">
+        <div class="form-custom">
+                <div class="card-custom">
+                    <form class="form-inline my-2 my-lg-0" th:action="@{/user/search}" style="display: block;" method="get">           
+                        <h3><i class="fas fa-user-friends" style="font-size: 174px;"></i><br><br>Invite Users</h3><br>
+                        <input class="form-control mr-sm-2" name="name_search" type="search" placeholder="Search" id="name_search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        <br>
+                        <br>
+                        <a class="btn btn-primary btn-block btn-lg" th:href="@{/user/home}"> Return</a>
+                    </form>   
                         </form>
-                       
+                    </form>   
+                </div>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Users Found:</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body" th:each=" userR : ${usersResult}">
+                                <a class="btn btn-primary btn-block" th:href="@{/user/sendInvite?id={id}(id=${userR.id})}" onclick="parentNode.remove()" th:text="'Send invite to ' + ${userR.fullName}" role="button"></a>
+                            </div>
+                        </div>
                    </div>                          
-                    <div class="card-body" th:each=" userR : ${usersResult}">
-                        <a class="btn btn-primary btn-block" th:href="@{/user/sendInvite?id={id}(id=${userR.id})}" onclick="parentNode.remove()" th:text="'Send invite to ' + ${userR.fullName}" role="button"></a>
+                        </div>
                     </div>
-                </div>
-                </div>
+                    </div>
+                </div>                        
             </div>
-            
+                </div>        
+                     
         </div>
     </div>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js" integrity="sha512-Izh34nqeeR7/nwthfeE0SI3c8uhFSnqxV0sI9TvTcXiFJkMd6fB644O64BRq2P/LA/+7eRvCw4GmLsXksyTHBg==" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+        $(document).ready(function(){
+            var res = /*[[${usersResult}]]*/ 'default';
+            if(res!=null){
+                $('#exampleModalCenter').modal();
+            }
+        });        
+          /*]]>*/
+    </script>
 </body>
 
 </html>
