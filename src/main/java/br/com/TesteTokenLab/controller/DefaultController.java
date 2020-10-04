@@ -141,6 +141,9 @@ public class DefaultController {
     public ModelAndView searchUser(String name_search){
         List<User> users = userService.findUserByString(name_search);
         users.remove(userService.findUserById(userLogged.getId()));
+        if(users.isEmpty()){
+            users = null;
+        }
         currSearch = name_search;
         mv.addObject("usersResult", users);
         mv.setViewName("user/inviteUser");
@@ -166,7 +169,6 @@ public class DefaultController {
     }
     @GetMapping("user/declineInvite{id}")
     public ModelAndView declineInvite(@RequestParam("id") Long eur_id){
-        EventUserRelation eurEdit =  userService.findRelationById(eur_id);
         userService.deleteRelationById(eur_id);
         return new ModelAndView(new RedirectView("home"));
     }
