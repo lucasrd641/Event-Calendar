@@ -149,6 +149,8 @@ public class DefaultController {
 
     @GetMapping("user/sendInvite{id}")
     public ModelAndView sendInvite(@RequestParam("id") Long user_id){
+        List<User> users = userService.findUserByString(currSearch,userLogged.getId());
+        mv.addObject("usersResult", users);
         EventUserRelation eur = new EventUserRelation();
         EventUserRelationId eurId = new EventUserRelationId();
         eurId.setEvent_Id(eventInvite.getId());
@@ -161,7 +163,7 @@ public class DefaultController {
         eur.setAccepted(false);
         mv.addObject("relation", eur);
         userService.sendInvite(eur);
-        return new ModelAndView(new RedirectView("search?name_search="+currSearch));
+        return mv;
     }
     @GetMapping("user/acceptInvite{id}")
     public ModelAndView acceptInvite(@RequestParam("id") Long event_id){

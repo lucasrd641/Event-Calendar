@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.OnDelete;
@@ -40,8 +41,10 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Event> events;
     @OneToMany(mappedBy = "event")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
 	private List<EventUserRelation> eventR;
 }
