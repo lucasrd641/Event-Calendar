@@ -2,6 +2,7 @@ package br.com.TesteTokenLab.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,7 +134,7 @@ public class DefaultController {
     @GetMapping("user/inviteUser{id}")
     public ModelAndView inviteUser(@RequestParam("id") Long event_id){
         eventInvite = userService.findEventById(event_id);
-        mv.addObject("usersResult", null);
+        mv.addObject("usersResult", Collections.EMPTY_LIST);
         mv.setViewName("user/inviteUser");
         return mv;
     }

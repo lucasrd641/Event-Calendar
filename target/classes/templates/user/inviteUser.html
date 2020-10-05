@@ -45,7 +45,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="card-body" th:each=" userR : ${usersResult}">
-                                <a class="btn btn-primary btn-block" th:href="@{/user/sendInvite?id={id}(id=${userR.id})}" onclick="parentNode.remove()" th:text="'Send invite to ' + ${userR.fullName}" role="button"></a>
+                                <a class="btn btn-primary btn-block" th:href="@{/user/sendInvite?id={id}(id=${userR.id})}" th:text="'Send invite to ' + ${userR.fullName}" role="button"></a>
                             </div>
                         </div>
                    </div>                          
@@ -71,7 +71,7 @@
         /*<![CDATA[*/
         $(document).ready(function(){
             var res = /*[[${usersResult}]]*/ 'defaultanyalue';
-            if(res){
+            if(res.length){
                 $('#exampleModalCenter').modal();
             }
         });        
