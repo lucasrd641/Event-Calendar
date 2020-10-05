@@ -37,10 +37,10 @@ public class EventUserRelation{
     @EmbeddedId
     private EventUserRelationId id;
  
-    @Column(name = "eur_accepted",columnDefinition = "tinyint default false")
+    @Column(name = "eur_accepted")
     private boolean accepted;
 
-    @Column(name = "eur_sent",columnDefinition = "tinyint default false")
+    @Column(name = "eur_sent")
     private boolean sent;
 
     

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.TesteTokenLab.model.Event;
 import br.com.TesteTokenLab.model.EventUserRelation;
+import br.com.TesteTokenLab.model.EventUserRelationId;
 import br.com.TesteTokenLab.model.Role;
 import br.com.TesteTokenLab.model.User;
 import br.com.TesteTokenLab.repository.EventRepository;
@@ -63,20 +64,23 @@ public class UserService {
 	public List<EventUserRelation> getInvitesById(Long id) {
                 return eventUserRepository.getInvitesById(id);
 	}
-	public List<User> findUserByString(String name_search, Long user_id) {
-		return userRepository.findUsersByString(name_search,user_id);
+	public List<User> findUserByString(String name_search, Long user_id, Long event_id) {
+		return userRepository.findUsersByString(name_search,user_id,event_id);
 	}
 	public User findUserById(Long user_id) {
 		return userRepository.getOne(user_id);
 	}
 	public void sendInvite(EventUserRelation eur) {
-                eventUserRepository.saveAndFlush(eur);
+        eventUserRepository.save(eur);
 	}
 	public EventUserRelation findRelationById(Long event_id, Long user_id) {
 		return eventUserRepository.findRelationById(event_id,user_id);
 	}
-	public void deleteRelationById(Long eur_id) {
-		eventUserRepository.deleteById(eur_id);
+	public void deleteRelationById(EventUserRelation eur) {
+		eventUserRepository.delete(eur);
+	}
+	public List<EventUserRelation> findAllRelations() {
+		return eventUserRepository.findAll();
 	}
     
 }
