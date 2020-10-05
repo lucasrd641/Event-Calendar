@@ -55,8 +55,8 @@
                         th:text=${eventFormSubmit}></button>
                 </form>
             </div>
-            <div class="col-md-6 overflow-auto">
-                <div class="card card-custom" th:each="event: ${allEvents}">
+            <div class="col-md-6 overflow-auto" style="max-height: 850px;">
+                <div class="card card-custom" th:each="event: ${allEvents}" style="min-height: auto;">
                     <div class="card-header">
                         <h4 class="card-title" style="display: inline;"><i class="fas fa-calendar-check"></i> <span th:text="${event.title}"></span></h4>
                         <div th:if="${event.user.id==loggedUser.id}" class="btn-group float-right">
@@ -100,11 +100,11 @@
                 </div>
             </div>
             <div class="col-md-3" th:if="${!invites.isEmpty()}">
-                <div class="card card-custom overflow-auto">
+                <div class="card card-custom overflow-auto" style="max-height: 400px;">
                     <div class="card-header">
                         <h3><i class="fa fa-bell" aria-hidden="true"></i> Event Invites</h3>
                     </div>
-                    <div class="card-body" style="font-size: 30px;" th:each="invite: ${invites}">
+                    <div class="card-body" style="font-size: 30px;min-height: 200px;" th:each="invite: ${invites}">
                         <div class="card card-block" th:if="${invite.accepted == FALSE}">
                             <div class="badge badge-primary" th:text="${invite.event.user.fullName} + ' Invited you to:'"></div><br>
                             <div class="badge badge-primary" th:text="${invite.event.title}"></div>
