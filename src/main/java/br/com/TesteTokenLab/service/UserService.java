@@ -63,17 +63,17 @@ public class UserService {
 	public List<EventUserRelation> getInvitesById(Long id) {
                 return eventUserRepository.getInvitesById(id);
 	}
-	public List<User> findUserByString(String name_search) {
-		return userRepository.findUsersByString(name_search);
+	public List<User> findUserByString(String name_search, Long user_id) {
+		return userRepository.findUsersByString(name_search,user_id);
 	}
 	public User findUserById(Long user_id) {
 		return userRepository.getOne(user_id);
 	}
 	public void sendInvite(EventUserRelation eur) {
-                eventUserRepository.save(eur);
+                eventUserRepository.saveAndFlush(eur);
 	}
-	public EventUserRelation findRelationById(Long eur_id) {
-		return eventUserRepository.getOne(eur_id);
+	public EventUserRelation findRelationById(Long event_id, Long user_id) {
+		return eventUserRepository.findRelationById(event_id,user_id);
 	}
 	public void deleteRelationById(Long eur_id) {
 		eventUserRepository.deleteById(eur_id);

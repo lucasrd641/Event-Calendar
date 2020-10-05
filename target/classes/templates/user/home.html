@@ -59,7 +59,7 @@
                 <div class="card card-custom" th:each="event: ${allEvents}">
                     <div class="card-header">
                         <h4 class="card-title" style="display: inline;"><i class="fas fa-calendar-check"></i> <span th:text="${event.title}"></span></h4>
-                        <div th:if="${event.id==loggedUser.id}" class="btn-group float-right">
+                        <div th:if="${event.user.id==loggedUser.id}" class="btn-group float-right">
                             <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
                                 <i class="fa fa-cog"></i>
@@ -97,11 +97,11 @@
                     </div>
                     <div class="card-body" style="font-size: 30px;" th:each="invite: ${invites}">
                         <div class="card card-block" th:if="${invite.accepted == FALSE}">
-                            <div class="badge badge-primary" th:text="${invite.user.fullName} + ' Invited you to:'"></div><br>
+                            <div class="badge badge-primary" th:text="${invite.event.user.fullName} + ' Invited you to:'"></div><br>
                             <div class="badge badge-primary" th:text="${invite.event.title}"></div>
                             <div>
-                                <a class="btn btn-success" style="float: left;width: 50%;" th:href="@{/user/acceptInvite?id={id}(id=${invite.id})}" th:text="'Accept'" role="button"></a>
-                                <a class="btn btn-danger" style="float: right;width: 50%;" th:href="@{/user/declineInvite?id={id}(id=${invite.id})}" th:text="'Decline'" role="button"></a>
+                                <a class="btn btn-success" style="float: left;width: 50%;" th:href="@{/user/acceptInvite?id={id}(id=${invite.event.id})}" th:text="'Accept'" role="button"></a>
+                                <a class="btn btn-danger" style="float: right;width: 50%;" th:href="@{/user/declineInvite?id={id}(id=${invite.event.id})}" th:text="'Decline'" role="button"></a>
                             </div>
                         </div>
                         

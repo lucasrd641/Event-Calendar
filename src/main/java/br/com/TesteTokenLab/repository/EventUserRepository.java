@@ -17,5 +17,8 @@ public interface EventUserRepository extends JpaRepository<EventUserRelation, Lo
 
     @Query("SELECT eur FROM EventUserRelation eur WHERE eur.user.id=:id")
 	EventUserRelation getByUserId(Long id);
+
+    @Query("SELECT eur FROM EventUserRelation eur WHERE eur.event.id=:event_id AND eur.user.id=:user_id")
+	EventUserRelation findRelationById(Long event_id, Long user_id);
     
 }

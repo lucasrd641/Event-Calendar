@@ -1,9 +1,15 @@
 package br.com.TesteTokenLab.model;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +41,7 @@ public class User {
     private Set<Role> roles;
     @OneToMany(mappedBy = "user")
     private List<Event> events;
-    @OneToMany(mappedBy = "user")
-	Set<EventUserRelation> eur_relation;
+    @OneToMany(mappedBy = "event")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+	private List<EventUserRelation> eventR;
 }

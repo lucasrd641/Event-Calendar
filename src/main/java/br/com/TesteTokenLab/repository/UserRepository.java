@@ -12,6 +12,6 @@ import br.com.TesteTokenLab.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
     User findByUsername(String username);
 
-    @Query("SELECT u FROM User u WHERE (u.fullName LIKE %:name_search% OR u.username LIKE %:name_search%) AND u NOT IN (SELECT u FROM User u JOIN EventUserRelation eur ON u.id=eur.user.id WHERE eur.sent=TRUE)")
-	List<User> findUsersByString(String name_search);
+    @Query("SELECT u FROM User u LEFT JOIN EventUserRelation eur ON u.id=eur.user.id WHERE (u.fullName LIKE %:name_search% OR u.username LIKE %:name_search%) AND (u.id<>:user_id OR eur.user.id<>:user_id OR eur.sent=TRUE)")
+	List<User> findUsersByString(String name_search, Long user_id);
 }

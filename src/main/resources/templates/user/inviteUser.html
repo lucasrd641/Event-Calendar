@@ -25,7 +25,7 @@
                 <div class="card-custom">
                     <form class="form-inline my-2 my-lg-0" th:action="@{/user/search}" style="display: block;" method="get">           
                         <h3><i class="fas fa-user-friends" style="font-size: 174px;"></i><br><br>Invite Users</h3><br>
-                        <input class="form-control mr-sm-2" name="name_search" type="search" placeholder="Search" id="name_search" aria-label="Search">
+                        <input class="form-control mr-sm-2" name="name_search" type="search" placeholder="Search" id="name_search" aria-label="Search" required>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         <br>
                         <br>
@@ -44,7 +44,6 @@
                         </button>
                         </div>
                         <div class="modal-body">
-                            <div th:if="${usersResult==null}" class="card-body">No Users Found</div>
                             <div class="card-body" th:each=" userR : ${usersResult}">
                                 <a class="btn btn-primary btn-block" th:href="@{/user/sendInvite?id={id}(id=${userR.id})}" onclick="parentNode.remove()" th:text="'Send invite to ' + ${userR.fullName}" role="button"></a>
                             </div>

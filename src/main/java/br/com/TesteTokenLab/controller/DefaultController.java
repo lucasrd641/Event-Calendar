@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import br.com.TesteTokenLab.model.Event;
 import br.com.TesteTokenLab.model.EventUserRelation;
+import br.com.TesteTokenLab.model.EventUserRelationId;
 import br.com.TesteTokenLab.model.User;
 import br.com.TesteTokenLab.service.UserService;
 
@@ -139,11 +140,7 @@ public class DefaultController {
 
     @GetMapping("/user/search")
     public ModelAndView searchUser(String name_search){
-        List<User> users = userService.findUserByString(name_search);
-        users.remove(userService.findUserById(userLogged.getId()));
-        if(users.isEmpty()){
-            users = null;
-        }
+        List<User> users = userService.findUserByString(name_search,userLogged.getId());
         currSearch = name_search;
         mv.addObject("usersResult", users);
         mv.setViewName("user/inviteUser");
@@ -153,16 +150,22 @@ public class DefaultController {
     @GetMapping("user/sendInvite{id}")
     public ModelAndView sendInvite(@RequestParam("id") Long user_id){
         EventUserRelation eur = new EventUserRelation();
+        EventUserRelationId eurId = new EventUserRelationId();
+        eurId.setEvent_Id(eventInvite.getId());
+        User u = userService.findUserById(user_id);
+        eurId.setUser_Id(u.getId());
+        eur.setId(eurId);
         eur.setEvent(eventInvite);
-        eur.setUser(userService.findUserById(user_id));
+        eur.setUser(u);
         eur.setSent(true);
-        userService.sendInvite(eur);
+        eur.setAccepted(false);
         mv.addObject("relation", eur);
+        userService.sendInvite(eur);
         return new ModelAndView(new RedirectView("search?name_search="+currSearch));
     }
     @GetMapping("user/acceptInvite{id}")
-    public ModelAndView acceptInvite(@RequestParam("id") Long eur_id){
-        EventUserRelation eurEdit =  userService.findRelationById(eur_id);
+    public ModelAndView acceptInvite(@RequestParam("id") Long event_id){
+        EventUserRelation eurEdit =  userService.findRelationById(event_id,userLogged.getId());
         eurEdit.setAccepted(true);
         userService.sendInvite(eurEdit);
         return new ModelAndView(new RedirectView("home"));

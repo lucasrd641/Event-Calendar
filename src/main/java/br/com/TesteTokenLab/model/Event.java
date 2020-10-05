@@ -1,6 +1,8 @@
 package br.com.TesteTokenLab.model;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -46,7 +51,7 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "user")
     @OnDelete(action = OnDeleteAction.CASCADE)
-	Set<EventUserRelation> eur_relation;
+	private List<EventUserRelation> userR;
 }
