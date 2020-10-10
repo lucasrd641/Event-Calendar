@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.TesteTokenLab.model.Event;
 import br.com.TesteTokenLab.model.EventUserRelation;
-import br.com.TesteTokenLab.model.EventUserRelationId;
 import br.com.TesteTokenLab.model.Role;
 import br.com.TesteTokenLab.model.User;
 import br.com.TesteTokenLab.repository.EventRepository;

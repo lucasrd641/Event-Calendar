@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import br.com.TesteTokenLab.model.Event;
-import br.com.TesteTokenLab.model.EventUserRelation;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>{
