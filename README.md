@@ -1,2 +1,2 @@
-# TesteTokenLab
-Token Lab Test made with SpringBoot, MySQL, JPA, HIBERNATE, LOMBOK and THYMELEAF
+# Event Calendar
+Event Calendar made with SpringBoot, MySQL, JPA, HIBERNATE, LOMBOK and THYMELEAF
